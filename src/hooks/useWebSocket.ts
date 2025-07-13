@@ -34,7 +34,7 @@ const createSocketConnection = (token: string) => {
   }
 
   console.log('🚀 Creating Socket.IO connection for user:', userId);
-  globalSocket = io('http://13.203.239.166:5001', {
+  globalSocket = io('https://13.203.239.166', {
     transports: ['websocket'],
     withCredentials: false,
   });
