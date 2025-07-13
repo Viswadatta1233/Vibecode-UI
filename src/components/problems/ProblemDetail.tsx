@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { problemAPI } from '../../services/api';
+import { problemAPI, submissionAPI } from '../../services/api';
 import { Play, ArrowLeft } from 'lucide-react';
 import { useWebSocket } from '../../hooks/useWebSocket';
 import { Link } from 'react-router-dom';
@@ -98,23 +98,47 @@ const ProblemDetail: React.FC = () => {
   const handleSubmit = async () => {
     if (!problem || !id) return;
     setSubmitting(true);
-    // setError(''); // This line was removed as per the edit hint
+    
     try {
       const stub = problem.codeStubs.find(s => s.language === selectedLanguage);
-      if (stub) {
-        const startSnippetIndex = userCode.indexOf(stub.startSnippet);
-        const endSnippetIndex = userCode.lastIndexOf(stub.endSnippet);
-        if (startSnippetIndex !== -1 && endSnippetIndex !== -1) {
-          const startOfUserCode = startSnippetIndex + stub.startSnippet.length;
-          const endOfUserCode = endSnippetIndex;
-          if (startOfUserCode < endOfUserCode) {
-            // codeToSubmit = userCode.substring(startOfUserCode, endOfUserCode).trim(); // This line was removed as per the edit hint
-          }
+      if (!stub) {
+        toast.error('No code stub found for selected language');
+        return;
+      }
+
+      // Extract user code from the full code
+      const startSnippetIndex = userCode.indexOf(stub.startSnippet);
+      const endSnippetIndex = userCode.lastIndexOf(stub.endSnippet);
+      
+      let codeToSubmit = userCode;
+      if (startSnippetIndex !== -1 && endSnippetIndex !== -1) {
+        const startOfUserCode = startSnippetIndex + stub.startSnippet.length;
+        const endOfUserCode = endSnippetIndex;
+        if (startOfUserCode < endOfUserCode) {
+          codeToSubmit = userCode.substring(startOfUserCode, endOfUserCode).trim();
         }
       }
-      // Submit code logic here
-    } catch (error) {
-      // setError('Submission failed'); // This line was removed as per the edit hint
+
+      console.log('Submitting code:', {
+        problemId: id,
+        language: selectedLanguage,
+        codeLength: codeToSubmit.length
+      });
+
+      // Make the actual API call
+      const submission = await submissionAPI.createSubmission({
+        problemId: id,
+        userCode: codeToSubmit,
+        language: selectedLanguage
+      });
+
+      console.log('Submission created:', submission);
+      setSubmission(submission);
+      toast.success('Code submitted successfully!');
+      
+    } catch (error: any) {
+      console.error('Submission error:', error);
+      toast.error(error.response?.data?.message || 'Submission failed');
     } finally {
       setSubmitting(false);
     }
