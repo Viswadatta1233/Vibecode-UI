@@ -9,8 +9,8 @@ import type {
 } from '../types';
 
 // API base URLs - use environment variables with fallbacks
-const PROBLEM_SERVICE_URL = import.meta.env.VITE_PROBLEM_SERVICE_URL || 'http://43.204.79.92:5000/api';
-const SUBMISSION_SERVICE_URL = import.meta.env.VITE_SUBMISSION_SERVICE_URL || 'http://13.203.239.166:5001/api';
+const PROBLEM_SERVICE_URL = import.meta.env.VITE_PROBLEM_SERVICE_URL || 'https://43.204.79.92/api';
+const SUBMISSION_SERVICE_URL = import.meta.env.VITE_SUBMISSION_SERVICE_URL || 'https://13.203.239.166/api';
 
 // Create axios instances
 const problemApi = axios.create({

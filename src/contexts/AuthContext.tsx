@@ -41,7 +41,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setAuthToken(token);
         try {
           // Try to fetch user details from backend
-          const res = await axios.get('http://43.204.79.92:5000/api/auth/me', {
+          const res = await axios.get('https://43.204.79.92/api/auth/me', {
             headers: { Authorization: `Bearer ${token}` },
           });
           setUser(res.data);
@@ -65,7 +65,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       localStorage.setItem('token', response.token);
       toast.success('Login successful!');
       // Fetch user info after login
-      const res = await axios.get('http://43.204.79.92:5000/api/auth/me', {
+      const res = await axios.get('https://43.204.79.92/api/auth/me', {
         headers: { Authorization: `Bearer ${response.token}` },
       });
       setUser(res.data);
@@ -83,7 +83,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       localStorage.setItem('token', response.token);
       toast.success('Account created successfully!');
       // Fetch user info after signup
-      const res = await axios.get('http://43.204.79.92:5000/api/auth/me', {
+      const res = await axios.get('https://43.204.79.92/api/auth/me', {
         headers: { Authorization: `Bearer ${response.token}` },
       });
       setUser(res.data);
