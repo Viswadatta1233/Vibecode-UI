@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { problemAPI } from '../../services/api';
 import { Search, Filter } from 'lucide-react';
-import { useTheme } from '../../contexts/ThemeContext';
 import type { Problem } from '../../types';
 
 const ProblemList: React.FC = () => {
@@ -11,7 +10,6 @@ const ProblemList: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [difficultyFilter, setDifficultyFilter] = useState<string>('all');
-  const { theme } = useTheme();
 
   useEffect(() => {
     fetchProblems();

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Editor from '@monaco-editor/react';
 import { useTheme } from '../../contexts/ThemeContext';
 import type { editor } from 'monaco-editor';
@@ -7,7 +7,6 @@ interface CodeEditorProps {
   value: string;
   onChange: (value: string) => void;
   language: string;
-  placeholder?: string;
   readOnly?: boolean;
 }
 
@@ -15,17 +14,12 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   value,
   onChange,
   language,
-  placeholder = "Write your code here...",
   readOnly = false
 }) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const { theme } = useTheme();
 
   const handleEditorDidMount = (editor: editor.IStandaloneCodeEditor) => {
     editorRef.current = editor;
-    setIsLoading(false);
-    
     // Configure editor options for better experience
     editor.updateOptions({
       minimap: { enabled: false },
@@ -107,14 +101,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
       },
     });
 
-    // Set up bracket pair colorization
-    const bracketPairs = [
-      ['(', ')'],
-      ['[', ']'],
-      ['{', '}'],
-      ['<', '>'],
-    ];
-
     // Configure language-specific settings
     if (language === 'JAVA') {
       editor.updateOptions({
@@ -154,25 +140,14 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     }
   };
 
-  const LoadingSpinner = () => (
-    <div className="flex items-center justify-center h-96 bg-leetcode-gray-900 dark:bg-leetcode-gray-800 text-leetcode-gray-300 transition-colors duration-200">
-      <div className="flex flex-col items-center space-y-4">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-leetcode-green"></div>
-        <p className="text-sm">Loading code editor...</p>
-      </div>
-    </div>
-  );
-
   return (
-    <div className="border border-leetcode-gray-200 dark:border-leetcode-gray-700 rounded-lg overflow-hidden transition-colors duration-200">
+    <div>
       <Editor
         height="400px"
         defaultLanguage={getMonacoLanguage(language)}
-        language={getMonacoLanguage(language)}
         value={value}
-        onChange={handleEditorChange}
         onMount={handleEditorDidMount}
-        loading={<LoadingSpinner />}
+        onChange={handleEditorChange}
         options={{
           readOnly,
           theme: 'vs-dark',

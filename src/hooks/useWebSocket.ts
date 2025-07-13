@@ -1,22 +1,9 @@
 /// <reference types="socket.io-client" />
-import { useEffect, useRef, useCallback, useState } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
 // @ts-ignore
 import { io, Socket } from 'socket.io-client';
-
-interface WebSocketMessage {
-  type: 'connection' | 'submission_update' | 'auth';
-  submissionId?: string;
-  data?: any;
-  message?: string;
-  userId?: string;
-}
-
-interface UseWebSocketReturn {
-  sendMessage: (message: any) => void;
-  isConnected: boolean;
-}
 
 let globalSocket: Socket | null = null;
 let globalConnectionState = false;
@@ -95,9 +82,9 @@ const createSocketConnection = (token: string) => {
 
 export const useWebSocket = (
   onSubmissionUpdate?: (submissionId: string, data: any) => void
-): UseWebSocketReturn => {
+) => {
   const { token } = useAuth();
-  const [isConnected, setIsConnected] = useState(globalConnectionState);
+  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
     if (onSubmissionUpdate) globalCallbacks.add(onSubmissionUpdate);
