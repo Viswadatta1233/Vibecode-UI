@@ -10,10 +10,10 @@
     }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
+     { "handle": "filesystem" },
+      {"src": "/(.*)",
+      "dest": "/index.html"}
+    
   ],
   "env": {
     "VITE_PROBLEM_SERVICE_URL": "http://43.204.79.92:5000/api",
