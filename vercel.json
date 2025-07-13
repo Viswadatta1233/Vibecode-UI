@@ -18,10 +18,6 @@
   "env": {
     "VITE_PROBLEM_SERVICE_URL": "http://43.204.79.92:5000/api",
     "VITE_SUBMISSION_SERVICE_URL": "http://13.203.239.166:5001/api"
-  },
-  "functions": {
-    "api/**/*.ts": {
-      "runtime": "nodejs18.x"
-    }
   }
+ 
 } 
