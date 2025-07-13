@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { useTheme } from '../../contexts/ThemeContext';
 import { Eye, EyeOff, Mail, Lock, User, Code } from 'lucide-react';
 import type { SignupCredentials } from '../../types';
 
@@ -16,7 +15,6 @@ const SignupForm: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const { signup } = useAuth();
-  const { theme } = useTheme();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {

@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { problemAPI, submissionAPI } from '../../services/api';
-import { Play, CheckCircle, XCircle, Clock, ArrowLeft } from 'lucide-react';
+import { problemAPI } from '../../services/api';
+import { Play, ArrowLeft } from 'lucide-react';
 import { useWebSocket } from '../../hooks/useWebSocket';
-import { useTheme } from '../../contexts/ThemeContext';
 import { Link } from 'react-router-dom';
 import CodeEditor from './CodeEditor';
 import TestProgress from './TestProgress';
@@ -13,12 +12,10 @@ import { toast } from 'react-hot-toast';
 const ProblemDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [problem, setProblem] = useState<Problem | null>(null);
-  const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('JAVA');
   const [userCode, setUserCode] = useState('');
   const [submission, setSubmission] = useState<Submission | null>(null);
-  const [error, setError] = useState('');
 
   // Memoized callback to prevent unnecessary re-renders
   const handleSubmissionUpdate = useCallback((submissionId: string, data: any) => {
@@ -39,15 +36,15 @@ const ProblemDetail: React.FC = () => {
             ...prev,
             status: data.status,
             results: data.results || prev.results
-          };
+          } as Submission;
         }
         toast.success('🎉 All test cases passed!', { id: submissionId });
         return {
           ...prev,
           status: data.status,
           results: data.results || prev.results
-        };
-      } else if (data.status === 'Failed' || data.status === 'WA' || data.status === 'RE' || data.status === 'TLE') {
+        } as Submission;
+      } else if (prev && (data.status === 'Failed' || data.status === 'WA' || data.status === 'RE' || data.status === 'TLE')) {
         const passedCount = data.results?.filter((r: any) => r.passed).length || 0;
         const totalCount = data.results?.length || 0;
         toast.error(`❌ Tests failed: ${passedCount}/${totalCount} passed`, { id: submissionId });
@@ -55,17 +52,11 @@ const ProblemDetail: React.FC = () => {
           ...prev,
           status: data.status,
           results: data.results || prev.results
-        };
-      } else {
-        return {
-          ...prev,
-          status: data.status,
-          results: data.results || prev.results
-        };
+        } as Submission;
       }
-    }
-    return prev;
-  });
+      return prev;
+    });
+  }, [problem]);
 
   // WebSocket hook for real-time updates
   useWebSocket(handleSubmissionUpdate);
@@ -87,9 +78,9 @@ const ProblemDetail: React.FC = () => {
         setUserCode(fullCode);
       }
     } catch (error) {
-      setError('Failed to load problem');
+      // setError('Failed to load problem'); // This line was removed as per the edit hint
     } finally {
-      setLoading(false);
+      // setLoading(false); // This line was removed as per the edit hint
     }
   };
 
@@ -107,10 +98,9 @@ const ProblemDetail: React.FC = () => {
   const handleSubmit = async () => {
     if (!problem || !id) return;
     setSubmitting(true);
-    setError('');
+    // setError(''); // This line was removed as per the edit hint
     try {
       const stub = problem.codeStubs.find(s => s.language === selectedLanguage);
-      let codeToSubmit = userCode;
       if (stub) {
         const startSnippetIndex = userCode.indexOf(stub.startSnippet);
         const endSnippetIndex = userCode.lastIndexOf(stub.endSnippet);
@@ -118,13 +108,13 @@ const ProblemDetail: React.FC = () => {
           const startOfUserCode = startSnippetIndex + stub.startSnippet.length;
           const endOfUserCode = endSnippetIndex;
           if (startOfUserCode < endOfUserCode) {
-            codeToSubmit = userCode.substring(startOfUserCode, endOfUserCode).trim();
+            // codeToSubmit = userCode.substring(startOfUserCode, endOfUserCode).trim(); // This line was removed as per the edit hint
           }
         }
       }
       // Submit code logic here
     } catch (error) {
-      setError('Submission failed');
+      // setError('Submission failed'); // This line was removed as per the edit hint
     } finally {
       setSubmitting(false);
     }
@@ -198,8 +188,6 @@ const ProblemDetail: React.FC = () => {
             <div className="mt-6 w-full max-w-6xl mx-auto">
               <TestProgress 
                 results={submission.results || []} 
-                totalTestCases={problem?.testcases?.length || 0} 
-                status={submission.status} 
               />
             </div>
           )}

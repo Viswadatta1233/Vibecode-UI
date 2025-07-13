@@ -1,6 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import Editor from '@monaco-editor/react';
-import { useTheme } from '../../contexts/ThemeContext';
 import type { editor } from 'monaco-editor';
 
 interface CodeEditorProps {

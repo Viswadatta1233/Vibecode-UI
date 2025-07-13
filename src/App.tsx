@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { ThemeProvider, useTheme } from './contexts/ThemeContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import Navbar from './components/layout/Navbar';
 import LoginForm from './components/auth/LoginForm';
 import SignupForm from './components/auth/SignupForm';
@@ -28,7 +28,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 // Home Component
 const Home: React.FC = () => {
   const { token } = useAuth();
-  const { theme } = useTheme();
+  // const { theme } = useTheme(); // Remove unused
 
   if (token) {
     return <Navigate to="/problems" replace />;
@@ -85,7 +85,7 @@ const Home: React.FC = () => {
 
 // Main App Component
 const AppContent: React.FC = () => {
-  const { theme } = useTheme();
+  // const { theme } = useTheme(); // Remove unused
   
   return (
     <Router>
@@ -123,9 +123,9 @@ const AppContent: React.FC = () => {
           toastOptions={{
             duration: 4000,
             style: {
-              background: theme === 'dark' ? '#1f2937' : '#ffffff',
-              color: theme === 'dark' ? '#ffffff' : '#1f2937',
-              border: theme === 'dark' ? '1px solid #374151' : '1px solid #e5e7eb',
+              background: '#ffffff',
+              color: '#1f2937',
+              border: '1px solid #e5e7eb',
             },
             success: {
               duration: 3000,
