@@ -42,7 +42,7 @@ const Home: React.FC = () => {
             Welcome to <span className="text-leetcode-green">VibeCode</span>
           </h1>
           <p className="text-xl text-leetcode-gray-600 dark:text-leetcode-gray-300 mb-8">
-            A modern coding platform for practicing algorithms and data structures ds
+            A modern coding platform for practicing algorithms and data structures 
           </p>
         </div>
 
