@@ -34,7 +34,9 @@ const createSocketConnection = (token: string) => {
   }
 
   console.log('🚀 Creating Socket.IO connection for user:', userId);
-  globalSocket = io('https://13.203.239.166', {
+  // Use environment variable or fallback to HTTP
+  const wsUrl = import.meta.env.VITE_SUBMISSION_SERVICE_URL?.replace('/api', '') || 'http://13.203.239.166';
+  globalSocket = io(wsUrl, {
     transports: ['websocket'],
     withCredentials: false,
   });
