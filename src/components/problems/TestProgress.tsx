@@ -1,6 +1,6 @@
 import React from 'react';
 import type { TestResult } from '../../types';
-import { CheckCircle, XCircle, Clock, AlertCircle } from 'lucide-react';
+import { CheckCircle, XCircle, Clock } from 'lucide-react';
 
 interface TestProgressProps {
   results: TestResult[];
