@@ -37,22 +37,37 @@ const ProblemDetail: React.FC = () => {
             status: data.status,
             results: data.results || prev.results
           } as Submission;
+        } else if (data.status === 'Success') {
+          toast.success('🎉 All test cases passed!', { id: submissionId });
+          return {
+            ...prev,
+            status: data.status,
+            results: data.results || prev.results
+          } as Submission;
+        } else if (data.status === 'WA') {
+          const passedCount = data.results?.filter((r: any) => r.passed).length || 0;
+          const totalCount = data.results?.length || 0;
+          toast.error(`❌ Wrong Answer: ${passedCount}/${totalCount} test cases passed`, { id: submissionId });
+          return {
+            ...prev,
+            status: data.status,
+            results: data.results || prev.results
+          } as Submission;
+        } else if (data.status === 'RE') {
+          toast.error(`❌ Runtime Error`, { id: submissionId });
+          return {
+            ...prev,
+            status: data.status,
+            results: data.results || prev.results
+          } as Submission;
+        } else if (data.status === 'Failed') {
+          toast.error(`❌ Submission failed: ${data.error || 'Unknown error'}`, { id: submissionId });
+          return {
+            ...prev,
+            status: data.status,
+            results: data.results || prev.results
+          } as Submission;
         }
-        toast.success('🎉 All test cases passed!', { id: submissionId });
-        return {
-          ...prev,
-          status: data.status,
-          results: data.results || prev.results
-        } as Submission;
-      } else if (prev && (data.status === 'Failed' || data.status === 'WA' || data.status === 'RE' || data.status === 'TLE')) {
-        const passedCount = data.results?.filter((r: any) => r.passed).length || 0;
-        const totalCount = data.results?.length || 0;
-        toast.error(`❌ Tests failed: ${passedCount}/${totalCount} passed`, { id: submissionId });
-        return {
-          ...prev,
-          status: data.status,
-          results: data.results || prev.results
-        } as Submission;
       }
       return prev;
     });
@@ -134,7 +149,12 @@ const ProblemDetail: React.FC = () => {
 
       console.log('Submission created:', submission);
       setSubmission(submission);
-      toast.success('Code submitted successfully!');
+      
+      // Show processing message instead of success
+      toast.loading('Processing submission...', { 
+        id: submission._id,
+        duration: 5000
+      });
       
     } catch (error: any) {
       console.error('Submission error:', error);
