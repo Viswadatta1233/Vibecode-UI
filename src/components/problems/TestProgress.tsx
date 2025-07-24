@@ -25,9 +25,23 @@ const TestProgress: React.FC<TestProgressProps> = ({ results, percentage, passed
   // Use props if available, otherwise calculate from results
   const finalPassedCount = propPassedCount ?? results.filter(r => r.passed).length;
   const finalTotalCount = propTotalCount ?? results.length;
-  const finalPercentage = percentage ?? (finalTotalCount > 0 ? (finalPassedCount / finalTotalCount) * 100 : 0);
+  
+  // Calculate percentage based on completed tests only when status is Running
+  let finalPercentage = percentage ?? 0;
+  if (status === 'Running' && !percentage) {
+    // When running, only count completed tests for percentage
+    const completedTests = results.filter(r => r.passed !== undefined);
+    const completedPassed = completedTests.filter(r => r.passed).length;
+    finalPercentage = completedTests.length > 0 ? (completedPassed / completedTests.length) * 100 : 0;
+  } else if (!percentage) {
+    finalPercentage = finalTotalCount > 0 ? (finalPassedCount / finalTotalCount) * 100 : 0;
+  }
 
-  const getStatusIcon = (result: TestResult) => {
+  const getStatusIcon = (result: TestResult, index: number, status: string) => {
+    // If test hasn't been processed yet (no output and no error), show processing
+    if (status === 'Running' && result.output === '' && !result.error && result.passed === false) {
+      return <Clock className="h-5 w-5 text-blue-500 animate-spin" />;
+    }
     if (result.error) {
       return <XCircle className="h-5 w-5 text-red-500" />;
     }
@@ -37,7 +51,11 @@ const TestProgress: React.FC<TestProgressProps> = ({ results, percentage, passed
     return <XCircle className="h-5 w-5 text-red-500" />;
   };
 
-  const getStatusText = (result: TestResult) => {
+  const getStatusText = (result: TestResult, index: number, status: string) => {
+    // If test hasn't been processed yet, show processing
+    if (status === 'Running' && result.output === '' && !result.error && result.passed === false) {
+      return 'Processing';
+    }
     if (result.error) {
       return 'Runtime Error';
     }
@@ -98,11 +116,18 @@ const TestProgress: React.FC<TestProgressProps> = ({ results, percentage, passed
             Status: {status || 'Completed'}
           </span>
           <span className={`font-medium ${
-            finalPassedCount === finalTotalCount 
-              ? 'text-green-600 dark:text-green-400' 
-              : 'text-red-600 dark:text-red-400'
+            status === 'Running' 
+              ? 'text-blue-600 dark:text-blue-400'
+              : finalPassedCount === finalTotalCount 
+                ? 'text-green-600 dark:text-green-400' 
+                : 'text-red-600 dark:text-red-400'
           }`}>
-            {finalPassedCount === finalTotalCount ? 'All tests passed!' : `${finalTotalCount - finalPassedCount} test(s) failed`}
+            {status === 'Running' 
+              ? `${finalPassedCount} passed, ${results.length - finalPassedCount} remaining`
+              : finalPassedCount === finalTotalCount 
+                ? 'All tests passed!' 
+                : `${finalTotalCount - finalPassedCount} test(s) failed`
+            }
           </span>
         </div>
       </div>
@@ -118,21 +143,23 @@ const TestProgress: React.FC<TestProgressProps> = ({ results, percentage, passed
                 : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
             }`}
           >
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center space-x-2">
-                {getStatusIcon(result)}
-                <span className="font-medium text-leetcode-gray-900 dark:text-white">
-                  Test Case {index + 1}
-                </span>
-              </div>
-              <span className={`text-sm font-medium ${
-                result.passed 
-                  ? 'text-green-600 dark:text-green-400' 
-                  : 'text-red-600 dark:text-red-400'
-              }`}>
-                {getStatusText(result)}
-              </span>
-            </div>
+                         <div className="flex items-center justify-between mb-2">
+               <div className="flex items-center space-x-2">
+                 {getStatusIcon(result, index, status || '')}
+                 <span className="font-medium text-leetcode-gray-900 dark:text-white">
+                   Test Case {index + 1}
+                 </span>
+               </div>
+               <span className={`text-sm font-medium ${
+                 status === 'Running' && result.output === '' && !result.error && result.passed === false
+                   ? 'text-blue-600 dark:text-blue-400'
+                   : result.passed 
+                     ? 'text-green-600 dark:text-green-400' 
+                     : 'text-red-600 dark:text-red-400'
+               }`}>
+                 {getStatusText(result, index, status || '')}
+               </span>
+             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
               <div>
