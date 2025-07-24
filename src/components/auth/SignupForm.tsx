@@ -111,7 +111,7 @@ const SignupForm: React.FC = () => {
             </div>
           </div>
 
-          <div>
+          {/* <div>
             <select
               name="role"
               value={credentials.role}
@@ -121,7 +121,7 @@ const SignupForm: React.FC = () => {
               <option value="user">User</option>
               <option value="admin">Admin</option>
             </select>
-          </div>
+          </div> */}
 
           {error && (
             <div className="text-leetcode-red text-sm text-center bg-red-50 dark:bg-red-900/20 p-3 rounded-md">
