@@ -154,48 +154,49 @@ const ProblemDetail: React.FC = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-leetcode-gray-50 dark:bg-leetcode-gray-900 px-4 md:px-8 py-8 transition-colors duration-200">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+    <div className="w-full min-h-screen bg-leetcode-gray-50 dark:bg-leetcode-gray-900 px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 transition-colors duration-200">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 w-full max-w-7xl mx-auto">
         {/* Problem Description Card */}
-        <div className="bg-white dark:bg-leetcode-gray-800 rounded-xl shadow-lg border border-leetcode-gray-200 dark:border-leetcode-gray-700 p-8 mb-6">
-          <Link to="/problems" className="flex items-center text-leetcode-green hover:underline mb-4">
-            <ArrowLeft className="h-5 w-5 mr-2" /> Back to Problems
+        <div className="bg-white dark:bg-leetcode-gray-800 rounded-xl shadow-lg border border-leetcode-gray-200 dark:border-leetcode-gray-700 p-4 sm:p-6 lg:p-8 order-2 xl:order-1">
+          <Link to="/problems" className="flex items-center text-leetcode-green hover:underline mb-4 text-sm sm:text-base">
+            <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 mr-2" /> Back to Problems
           </Link>
-          <h2 className="text-2xl font-bold text-leetcode-gray-900 dark:text-white mb-2">{problem?.title}</h2>
-          <span className={`px-3 py-1 text-xs font-medium rounded-full ${problem?.difficulty ? '' : ''} mb-4 inline-block`}>
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-leetcode-gray-900 dark:text-white mb-2">{problem?.title}</h2>
+          <span className={`px-2 sm:px-3 py-1 text-xs font-medium rounded-full ${problem?.difficulty ? '' : ''} mb-4 inline-block`}>
             {problem?.difficulty}
           </span>
-          <p className="text-leetcode-gray-700 dark:text-leetcode-gray-300 mb-4 whitespace-pre-line">
+          <p className="text-sm sm:text-base text-leetcode-gray-700 dark:text-leetcode-gray-300 mb-4 whitespace-pre-line leading-relaxed">
             {problem?.description}
           </p>
           {/* Test Cases */}
           <div className="mt-6">
-            <h3 className="text-lg font-semibold text-leetcode-gray-900 dark:text-white mb-2">Sample Test Cases</h3>
+            <h3 className="text-base sm:text-lg font-semibold text-leetcode-gray-900 dark:text-white mb-2">Sample Test Cases</h3>
             <div className="space-y-2">
               {(problem?.testcases ?? []).length > 0 ? (
                 (problem?.testcases ?? []).map((tc, idx) => (
-                  <div key={idx} className="bg-leetcode-gray-100 dark:bg-leetcode-gray-900 border border-leetcode-gray-200 dark:border-leetcode-gray-700 rounded-md px-4 py-2 text-sm text-leetcode-gray-700 dark:text-leetcode-gray-300">
-                    <div><span className="font-semibold">Input:</span> <span className="font-mono">{tc.input}</span></div>
-                    <div><span className="font-semibold">Output:</span> <span className="font-mono">{tc.output}</span></div>
+                  <div key={idx} className="bg-leetcode-gray-100 dark:bg-leetcode-gray-900 border border-leetcode-gray-200 dark:border-leetcode-gray-700 rounded-md px-3 sm:px-4 py-2 text-xs sm:text-sm text-leetcode-gray-700 dark:text-leetcode-gray-300">
+                    <div className="mb-1"><span className="font-semibold">Input:</span> <span className="font-mono break-all">{tc.input}</span></div>
+                    <div><span className="font-semibold">Output:</span> <span className="font-mono break-all">{tc.output}</span></div>
                   </div>
                 ))
               ) : (
-                <div className="text-leetcode-gray-400">No test cases available.</div>
+                <div className="text-leetcode-gray-400 text-sm">No test cases available.</div>
               )}
             </div>
           </div>
         </div>
+        
         {/* Code Editor and Submission Card */}
-        <div className="bg-white dark:bg-leetcode-gray-800 rounded-xl shadow-lg border border-leetcode-gray-200 dark:border-leetcode-gray-700 p-8 mb-6 flex flex-col">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-leetcode-gray-900 dark:text-white">
+        <div className="bg-white dark:bg-leetcode-gray-800 rounded-xl shadow-lg border border-leetcode-gray-200 dark:border-leetcode-gray-700 p-4 sm:p-6 lg:p-8 flex flex-col order-1 xl:order-2">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-3">
+            <h2 className="text-lg sm:text-xl font-semibold text-leetcode-gray-900 dark:text-white">
               Solution
             </h2>
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
               <select
                 value={selectedLanguage}
                 onChange={(e) => handleLanguageChange(e.target.value)}
-                className="px-3 py-1 border border-leetcode-gray-300 dark:border-leetcode-gray-600 rounded-md bg-white dark:bg-leetcode-gray-700 text-leetcode-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-leetcode-green focus:border-leetcode-green transition-colors"
+                className="px-3 py-2 border border-leetcode-gray-300 dark:border-leetcode-gray-600 rounded-md bg-white dark:bg-leetcode-gray-700 text-leetcode-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-leetcode-green focus:border-leetcode-green transition-colors"
               >
                 <option value="JAVA">Java</option>
                 <option value="CPP">C++</option>
@@ -204,7 +205,7 @@ const ProblemDetail: React.FC = () => {
               <button
                 onClick={handleSubmit}
                 disabled={submitting}
-                className="flex items-center px-4 py-2 bg-leetcode-green hover:bg-green-600 text-white rounded-md text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center justify-center px-4 py-2 bg-leetcode-green hover:bg-green-600 text-white rounded-md text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Play className="h-4 w-4 mr-2" />
                 {submitting ? 'Submitting...' : 'Submit'}
@@ -218,7 +219,7 @@ const ProblemDetail: React.FC = () => {
           />
           {/* Test Results */}
           {submission && (
-            <div className="mt-6 w-full max-w-6xl mx-auto">
+            <div className="mt-6 w-full">
               <TestProgress 
                 results={submission.results || []}
                 percentage={submission.percentage}

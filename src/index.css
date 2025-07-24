@@ -7,6 +7,7 @@ body {
   width: 100vw;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
 .dark body {
@@ -28,7 +29,44 @@ body {
   -webkit-text-size-adjust: 100%;
 }
 
+/* Mobile responsive utilities */
+@media (max-width: 640px) {
+  .mobile-text-xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+  
+  .mobile-text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  
+  .mobile-p-2 {
+    padding: 0.5rem;
+  }
+  
+  .mobile-p-3 {
+    padding: 0.75rem;
+  }
+  
+  .mobile-p-4 {
+    padding: 1rem;
+  }
+}
+
+/* Prevent horizontal scroll on mobile */
+* {
+  box-sizing: border-box;
+}
+
 /* Custom styles for code editor */
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -41,6 +79,15 @@ body {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* Break long words to prevent overflow */
+.break-all {
+  word-break: break-all;
+}
+
+.break-words {
+  word-break: break-words;
 }
 
 /* Custom scrollbar for code editor */
@@ -154,4 +201,42 @@ textarea::-webkit-scrollbar-thumb:hover {
 .dark .monaco-editor .cursor {
   background-color: #ffffff !important;
   border-color: #ffffff !important;
+}
+
+/* Mobile-specific Monaco Editor adjustments */
+@media (max-width: 640px) {
+  .monaco-editor {
+    font-size: 12px !important;
+    line-height: 16px !important;
+  }
+  
+  .monaco-editor .margin {
+    width: 30px !important;
+  }
+}
+
+/* Toast notifications mobile responsiveness */
+@media (max-width: 640px) {
+  .react-hot-toast__toast {
+    margin: 0.5rem !important;
+    max-width: calc(100vw - 1rem) !important;
+    font-size: 0.875rem !important;
+  }
+}
+
+/* Prevent text selection on mobile for better UX */
+@media (max-width: 640px) {
+  .no-select-mobile {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+}
+
+/* Smooth transitions for mobile interactions */
+@media (max-width: 640px) {
+  .mobile-transition {
+    transition: all 0.2s ease-in-out;
+  }
 }

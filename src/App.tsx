@@ -35,45 +35,45 @@ const Home: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen w-full bg-main-app flex items-center justify-center px-0">
-      <div className="w-full text-center">
-        <div className="mb-8">
-          <h1 className="text-5xl font-bold text-leetcode-gray-900 dark:text-white mb-4">
+    <div className="min-h-screen w-full bg-main-app flex items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-6xl text-center">
+        <div className="mb-8 sm:mb-12">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-leetcode-gray-900 dark:text-white mb-4">
             Welcome to <span className="text-leetcode-green">VibeCode</span>
           </h1>
-          <p className="text-xl text-leetcode-gray-600 dark:text-leetcode-gray-300 mb-8">
+          <p className="text-lg sm:text-xl text-leetcode-gray-600 dark:text-leetcode-gray-300 mb-6 sm:mb-8 px-4">
             A modern coding platform for practicing algorithms and data structures 
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 mb-12">
-          <div className="bg-white dark:bg-leetcode-gray-800 p-6 rounded-lg shadow-md border border-leetcode-gray-200 dark:border-leetcode-gray-700">
-            <div className="text-3xl mb-4">💻</div>
-            <h3 className="text-lg font-semibold text-leetcode-gray-900 dark:text-white mb-2">Code Editor</h3>
-            <p className="text-leetcode-gray-600 dark:text-leetcode-gray-300">Write, test, and submit your solutions with our integrated code editor</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-12 px-4">
+          <div className="bg-white dark:bg-leetcode-gray-800 p-4 sm:p-6 rounded-lg shadow-md border border-leetcode-gray-200 dark:border-leetcode-gray-700">
+            <div className="text-2xl sm:text-3xl mb-3 sm:mb-4">💻</div>
+            <h3 className="text-base sm:text-lg font-semibold text-leetcode-gray-900 dark:text-white mb-2">Code Editor</h3>
+            <p className="text-sm sm:text-base text-leetcode-gray-600 dark:text-leetcode-gray-300">Write, test, and submit your solutions with our integrated code editor</p>
           </div>
-          <div className="bg-white dark:bg-leetcode-gray-800 p-6 rounded-lg shadow-md border border-leetcode-gray-200 dark:border-leetcode-gray-700">
-            <div className="text-3xl mb-4">🧪</div>
-            <h3 className="text-lg font-semibold text-leetcode-gray-900 dark:text-white mb-2">Test Cases</h3>
-            <p className="text-leetcode-gray-600 dark:text-leetcode-gray-300">Run your code against multiple test cases to ensure correctness</p>
+          <div className="bg-white dark:bg-leetcode-gray-800 p-4 sm:p-6 rounded-lg shadow-md border border-leetcode-gray-200 dark:border-leetcode-gray-700">
+            <div className="text-2xl sm:text-3xl mb-3 sm:mb-4">🧪</div>
+            <h3 className="text-base sm:text-lg font-semibold text-leetcode-gray-900 dark:text-white mb-2">Test Cases</h3>
+            <p className="text-sm sm:text-base text-leetcode-gray-600 dark:text-leetcode-gray-300">Run your code against multiple test cases to ensure correctness</p>
           </div>
-          <div className="bg-white dark:bg-leetcode-gray-800 p-6 rounded-lg shadow-md border border-leetcode-gray-200 dark:border-leetcode-gray-700">
-            <div className="text-3xl mb-4">📊</div>
-            <h3 className="text-lg font-semibold text-leetcode-gray-900 dark:text-white mb-2">Real-time Results</h3>
-            <p className="text-leetcode-gray-600 dark:text-leetcode-gray-300">Get instant feedback on your submissions with detailed results</p>
+          <div className="bg-white dark:bg-leetcode-gray-800 p-4 sm:p-6 rounded-lg shadow-md border border-leetcode-gray-200 dark:border-leetcode-gray-700 sm:col-span-2 lg:col-span-1">
+            <div className="text-2xl sm:text-3xl mb-3 sm:mb-4">📊</div>
+            <h3 className="text-base sm:text-lg font-semibold text-leetcode-gray-900 dark:text-white mb-2">Real-time Results</h3>
+            <p className="text-sm sm:text-base text-leetcode-gray-600 dark:text-leetcode-gray-300">Get instant feedback on your submissions with detailed results</p>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
           <a
             href="/signup"
-            className="bg-leetcode-green hover:bg-green-600 text-white px-8 py-3 rounded-md text-lg font-medium transition-colors"
+            className="bg-leetcode-green hover:bg-green-600 text-white px-6 sm:px-8 py-3 rounded-md text-base sm:text-lg font-medium transition-colors"
           >
             Get Started
           </a>
           <a
             href="/login"
-            className="border border-leetcode-green text-leetcode-green hover:bg-leetcode-green hover:text-white px-8 py-3 rounded-md text-lg font-medium transition-colors"
+            className="border border-leetcode-green text-leetcode-green hover:bg-leetcode-green hover:text-white px-6 sm:px-8 py-3 rounded-md text-base sm:text-lg font-medium transition-colors"
           >
             Sign In
           </a>
@@ -115,7 +115,7 @@ const AppContent: React.FC = () => {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
-        <footer className="w-full text-center py-4 text-leetcode-gray-400 dark:text-leetcode-gray-500 text-sm border-t border-leetcode-gray-200 dark:border-leetcode-gray-700 bg-transparent mt-8">
+        <footer className="w-full text-center py-4 text-leetcode-gray-400 dark:text-leetcode-gray-500 text-sm border-t border-leetcode-gray-200 dark:border-leetcode-gray-700 bg-transparent mt-8 px-4">
           © {new Date().getFullYear()} VibeCode. All rights reserved.
         </footer>
         <Toaster
@@ -126,6 +126,8 @@ const AppContent: React.FC = () => {
               background: '#ffffff',
               color: '#1f2937',
               border: '1px solid #e5e7eb',
+              maxWidth: '90vw',
+              fontSize: '14px',
             },
             success: {
               duration: 3000,

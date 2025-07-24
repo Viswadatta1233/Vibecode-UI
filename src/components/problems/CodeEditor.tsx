@@ -23,8 +23,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     editor.updateOptions({
       minimap: { enabled: false },
       scrollBeyondLastLine: false,
-      fontSize: 14,
-      lineHeight: 20,
+      fontSize: 13,
+      lineHeight: 18,
       fontFamily: 'Consolas, "Courier New", monospace',
       wordWrap: 'on',
       automaticLayout: true,
@@ -140,9 +140,9 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   };
 
   return (
-    <div>
+    <div className="w-full">
       <Editor
-        height="400px"
+        height="350px"
         defaultLanguage={getMonacoLanguage(language)}
         value={value}
         onMount={handleEditorDidMount}
@@ -153,8 +153,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
           automaticLayout: true,
           scrollBeyondLastLine: false,
           minimap: { enabled: false },
-          fontSize: 14,
-          lineHeight: 20,
+          fontSize: 13,
+          lineHeight: 18,
           fontFamily: 'Consolas, "Courier New", monospace',
           wordWrap: 'on',
           bracketPairColorization: {
