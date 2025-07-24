@@ -37,7 +37,7 @@ const TestProgress: React.FC<TestProgressProps> = ({ results, percentage, passed
     finalPercentage = finalTotalCount > 0 ? (finalPassedCount / finalTotalCount) * 100 : 0;
   }
 
-  const getStatusIcon = (result: TestResult, index: number, status: string) => {
+  const getStatusIcon = (result: TestResult, status: string) => {
     // If test hasn't been processed yet (no output and no error), show processing
     if (status === 'Running' && result.output === '' && !result.error && result.passed === false) {
       return <Clock className="h-5 w-5 text-blue-500 animate-spin" />;
@@ -51,7 +51,7 @@ const TestProgress: React.FC<TestProgressProps> = ({ results, percentage, passed
     return <XCircle className="h-5 w-5 text-red-500" />;
   };
 
-  const getStatusText = (result: TestResult, index: number, status: string) => {
+  const getStatusText = (result: TestResult, status: string) => {
     // If test hasn't been processed yet, show processing
     if (status === 'Running' && result.output === '' && !result.error && result.passed === false) {
       return 'Processing';
@@ -145,7 +145,7 @@ const TestProgress: React.FC<TestProgressProps> = ({ results, percentage, passed
           >
                          <div className="flex items-center justify-between mb-2">
                <div className="flex items-center space-x-2">
-                 {getStatusIcon(result, index, status || '')}
+                 {getStatusIcon(result, status || '')}
                  <span className="font-medium text-leetcode-gray-900 dark:text-white">
                    Test Case {index + 1}
                  </span>
@@ -157,7 +157,7 @@ const TestProgress: React.FC<TestProgressProps> = ({ results, percentage, passed
                      ? 'text-green-600 dark:text-green-400' 
                      : 'text-red-600 dark:text-red-400'
                }`}>
-                 {getStatusText(result, index, status || '')}
+                 {getStatusText(result, status || '')}
                </span>
              </div>
             
