@@ -123,7 +123,7 @@ const TestProgress: React.FC<TestProgressProps> = ({ results, percentage, passed
                 : 'text-red-600 dark:text-red-400'
           }`}>
             {status === 'Running' 
-              ? `${finalPassedCount} passed, ${results.length - finalPassedCount} remaining`
+              ? `${finalPassedCount} passed`
               : finalPassedCount === finalTotalCount 
                 ? 'All tests passed!' 
                 : `${finalTotalCount - finalPassedCount} test(s) failed`
