@@ -4,9 +4,13 @@ import { CheckCircle, XCircle, Clock } from 'lucide-react';
 
 interface TestProgressProps {
   results: TestResult[];
+  percentage?: number;
+  passedCount?: number;
+  totalCount?: number;
+  status?: string;
 }
 
-const TestProgress: React.FC<TestProgressProps> = ({ results }) => {
+const TestProgress: React.FC<TestProgressProps> = ({ results, percentage, passedCount: propPassedCount, totalCount: propTotalCount, status }) => {
   if (!results || results.length === 0) {
     return (
       <div className="mt-6 p-4 bg-leetcode-gray-50 dark:bg-leetcode-gray-800 rounded-lg border border-leetcode-gray-200 dark:border-leetcode-gray-700">
@@ -18,9 +22,10 @@ const TestProgress: React.FC<TestProgressProps> = ({ results }) => {
     );
   }
 
-  const passedCount = results.filter(r => r.passed).length;
-  const totalCount = results.length;
-  const progressPercentage = totalCount > 0 ? (passedCount / totalCount) * 100 : 0;
+  // Use props if available, otherwise calculate from results
+  const finalPassedCount = propPassedCount ?? results.filter(r => r.passed).length;
+  const finalTotalCount = propTotalCount ?? results.length;
+  const finalPercentage = percentage ?? (finalTotalCount > 0 ? (finalPassedCount / finalTotalCount) * 100 : 0);
 
   const getStatusIcon = (result: TestResult) => {
     if (result.error) {
@@ -51,28 +56,53 @@ const TestProgress: React.FC<TestProgressProps> = ({ results }) => {
             Test Results
           </h3>
           <span className="text-sm text-leetcode-gray-600 dark:text-leetcode-gray-300">
-            {passedCount}/{totalCount} passed
+            {finalPassedCount}/{finalTotalCount} passed
           </span>
         </div>
         
-        {/* Progress Bar */}
-        <div className="w-full bg-leetcode-gray-200 dark:bg-leetcode-gray-700 rounded-full h-2 mb-2">
-          <div 
-            className="bg-leetcode-green h-2 rounded-full transition-all duration-300"
-            style={{ width: `${progressPercentage}%` }}
-          />
+        {/* Overall Score Display */}
+        <div className="mb-4 p-3 bg-leetcode-gray-100 dark:bg-leetcode-gray-700 rounded-lg">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium text-leetcode-gray-700 dark:text-leetcode-gray-300">
+              Overall Score:
+            </span>
+            <div className="flex items-center space-x-2">
+              <span className={`text-2xl font-bold ${
+                finalPercentage === 100 ? 'text-green-600' :
+                finalPercentage >= 60 ? 'text-yellow-600' :
+                finalPercentage > 0 ? 'text-orange-600' : 'text-red-600'
+              }`}>
+                {Math.round(finalPercentage)}%
+              </span>
+              <span className="text-sm text-leetcode-gray-500 dark:text-leetcode-gray-400">
+                ({finalPassedCount}/{finalTotalCount})
+              </span>
+            </div>
+          </div>
+          
+          {/* Progress Bar */}
+          <div className="mt-2 w-full bg-leetcode-gray-200 dark:bg-leetcode-gray-700 rounded-full h-2">
+            <div 
+              className={`h-2 rounded-full transition-all duration-300 ${
+                finalPercentage === 100 ? 'bg-green-500' :
+                finalPercentage >= 60 ? 'bg-yellow-500' :
+                finalPercentage > 0 ? 'bg-orange-500' : 'bg-red-500'
+              }`}
+              style={{ width: `${finalPercentage}%` }}
+            />
+          </div>
         </div>
         
         <div className="flex items-center justify-between text-sm">
           <span className="text-leetcode-gray-600 dark:text-leetcode-gray-300">
-            Progress: {Math.round(progressPercentage)}%
+            Status: {status || 'Completed'}
           </span>
           <span className={`font-medium ${
-            passedCount === totalCount 
+            finalPassedCount === finalTotalCount 
               ? 'text-green-600 dark:text-green-400' 
               : 'text-red-600 dark:text-red-400'
           }`}>
-            {passedCount === totalCount ? 'All tests passed!' : `${totalCount - passedCount} test(s) failed`}
+            {finalPassedCount === finalTotalCount ? 'All tests passed!' : `${finalTotalCount - finalPassedCount} test(s) failed`}
           </span>
         </div>
       </div>

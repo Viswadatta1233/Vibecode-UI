@@ -40,6 +40,9 @@ export interface Submission {
   language: string;
   status: 'Pending' | 'Running' | 'Completed' | 'Failed' | 'Success' | 'WA' | 'RE' | 'TLE' | 'MLE';
   results?: TestResult[];
+  percentage?: number;
+  passedCount?: number;
+  totalCount?: number;
   createdAt: string;
   updatedAt: string;
 }

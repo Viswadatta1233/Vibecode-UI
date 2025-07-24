@@ -21,6 +21,16 @@ const ProblemDetail: React.FC = () => {
   const handleSubmissionUpdate = useCallback((submissionId: string, data: any) => {
     setSubmission(prev => {
       if (prev && prev._id === submissionId) {
+        // Update submission with all the data from backend including percentage
+        const updatedSubmission = {
+          ...prev,
+          status: data.status,
+          results: data.results || prev.results,
+          percentage: data.percentage,
+          passedCount: data.passedCount,
+          totalCount: data.totalCount
+        } as Submission;
+
         if (data.status === 'Running' && data.results) {
           const completedCount = data.results.length;
           const totalCount = problem?.testcases.length || 0;
@@ -32,42 +42,21 @@ const ProblemDetail: React.FC = () => {
               duration: 2000
             });
           }
-          return {
-            ...prev,
-            status: data.status,
-            results: data.results || prev.results
-          } as Submission;
         } else if (data.status === 'Success') {
           toast.success('🎉 All test cases passed!', { id: submissionId });
-          return {
-            ...prev,
-            status: data.status,
-            results: data.results || prev.results
-          } as Submission;
         } else if (data.status === 'WA') {
-          const passedCount = data.results?.filter((r: any) => r.passed).length || 0;
-          const totalCount = data.results?.length || 0;
-          toast.error(`❌ Wrong Answer: ${passedCount}/${totalCount} test cases passed`, { id: submissionId });
-          return {
-            ...prev,
-            status: data.status,
-            results: data.results || prev.results
-          } as Submission;
+          const passedCount = data.passedCount || data.results?.filter((r: any) => r.passed).length || 0;
+          const totalCount = data.totalCount || data.results?.length || 0;
+          const percentage = data.percentage || 0;
+          toast.error(`❌ Wrong Answer: ${passedCount}/${totalCount} test cases passed (${percentage}%)`, { id: submissionId });
         } else if (data.status === 'RE') {
-          toast.error(`❌ Runtime Error`, { id: submissionId });
-          return {
-            ...prev,
-            status: data.status,
-            results: data.results || prev.results
-          } as Submission;
+          const percentage = data.percentage || 0;
+          toast.error(`❌ Runtime Error (${percentage}% score)`, { id: submissionId });
         } else if (data.status === 'Failed') {
           toast.error(`❌ Submission failed: ${data.error || 'Unknown error'}`, { id: submissionId });
-          return {
-            ...prev,
-            status: data.status,
-            results: data.results || prev.results
-          } as Submission;
         }
+        
+        return updatedSubmission;
       }
       return prev;
     });
@@ -231,7 +220,11 @@ const ProblemDetail: React.FC = () => {
           {submission && (
             <div className="mt-6 w-full max-w-6xl mx-auto">
               <TestProgress 
-                results={submission.results || []} 
+                results={submission.results || []}
+                percentage={submission.percentage}
+                passedCount={submission.passedCount}
+                totalCount={submission.totalCount}
+                status={submission.status}
               />
             </div>
           )}
