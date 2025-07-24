@@ -3,6 +3,7 @@ export interface User {
   _id: string;
   name: string;
   email: string;
+  role?: string;
 }
 
 export interface LoginCredentials {
@@ -14,6 +15,7 @@ export interface SignupCredentials {
   name: string;
   email: string;
   password: string;
+  role?: string;
 }
 
 export interface AuthResponse {
