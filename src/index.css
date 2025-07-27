@@ -2,31 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-leetcode-green: #00af9b;
+  --color-leetcode-gray-50: #f9fafb;
+  --color-leetcode-gray-100: #f3f4f6;
+  --color-leetcode-gray-200: #e5e7eb;
+  --color-leetcode-gray-300: #d1d5db;
+  --color-leetcode-gray-400: #9ca3af;
+  --color-leetcode-gray-500: #6b7280;
+  --color-leetcode-gray-600: #4b5563;
+  --color-leetcode-gray-700: #374151;
+  --color-leetcode-gray-800: #1f2937;
+  --color-leetcode-gray-900: #111827;
+}
+
 body {
   min-height: 100vh;
   width: 100vw;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
-.dark body {
-  background-color: #181e29;
+html {
+  transition: background-color 0.2s ease-in-out;
 }
 
-.bg-main-app {
-  background-color: #181e29;
-}
-
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+/* Ensure smooth transitions for all theme changes */
+* {
+  box-sizing: border-box;
 }
 
 /* Mobile responsive utilities */
@@ -54,12 +59,48 @@ body {
   }
 }
 
-/* Prevent horizontal scroll on mobile */
-* {
-  box-sizing: border-box;
+/* Theme transition improvements for mobile */
+@media (max-width: 768px) {
+  .dark * {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+  }
+  
+  /* Ensure mobile backgrounds transition properly */
+  .dark body {
+    background-color: var(--color-leetcode-gray-900) !important;
+  }
+  
+  .dark nav {
+    background-color: var(--color-leetcode-gray-800) !important;
+  }
+  
+  .dark main {
+    background: linear-gradient(to bottom right, var(--color-leetcode-gray-900), var(--color-leetcode-gray-800), var(--color-leetcode-gray-900)) !important;
+  }
+  
+  /* Fix text visibility in mobile dark mode */
+  .dark .mobile-text-fix {
+    color: var(--color-leetcode-gray-100) !important;
+  }
+  
+  /* Mobile button fixes */
+  .dark button {
+    transition: all 0.2s ease-in-out;
+  }
+  
+  /* Mobile form fixes */
+  .dark input, .dark textarea, .dark select {
+    background-color: var(--color-leetcode-gray-800) !important;
+    color: var(--color-leetcode-gray-100) !important;
+    border-color: var(--color-leetcode-gray-600) !important;
+  }
+  
+  .dark input::placeholder, .dark textarea::placeholder {
+    color: var(--color-leetcode-gray-400) !important;
+  }
 }
 
-/* Custom styles for code editor */
+/* Line clamp utility */
 .line-clamp-1 {
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -74,13 +115,6 @@ body {
   overflow: hidden;
 }
 
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
 /* Break long words to prevent overflow */
 .break-all {
   word-break: break-all;
@@ -90,120 +124,7 @@ body {
   word-break: break-words;
 }
 
-/* Custom scrollbar for code editor */
-textarea::-webkit-scrollbar {
-  width: 8px;
-}
-
-textarea::-webkit-scrollbar-track {
-  background: #1f2937;
-}
-
-textarea::-webkit-scrollbar-thumb {
-  background: #4b5563;
-  border-radius: 4px;
-}
-
-textarea::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;
-}
-
-/* Monaco Editor custom styles */
-.monaco-editor {
-  border-radius: 0.5rem;
-  overflow: hidden;
-}
-
-.monaco-editor .overflow-guard {
-  border-radius: 0.5rem;
-}
-
-/* Custom Monaco Editor theme adjustments */
-.monaco-editor.vs-dark {
-  background-color: #1f2937 !important;
-}
-
-.monaco-editor .margin {
-  background-color: #111827 !important;
-}
-
-/* Improve bracket highlighting visibility */
-.monaco-editor .bracket-highlighting-0 {
-  border-color: #3b82f6 !important;
-}
-
-.monaco-editor .bracket-highlighting-1 {
-  border-color: #10b981 !important;
-}
-
-.monaco-editor .bracket-highlighting-2 {
-  border-color: #f59e0b !important;
-}
-
-.monaco-editor .bracket-highlighting-3 {
-  border-color: #ef4444 !important;
-}
-
-/* Indentation guides */
-.monaco-editor .indent-guide {
-  border-left: 1px solid #374151 !important;
-}
-
-.monaco-editor .indent-guide.active {
-  border-left: 1px solid #6b7280 !important;
-}
-
-/* Line numbers */
-.monaco-editor .margin .monaco-editor-background {
-  background-color: #111827 !important;
-}
-
-.monaco-editor .line-numbers {
-  color: #6b7280 !important;
-}
-
-/* Selection */
-.monaco-editor .selected-text {
-  background-color: #3b82f6 !important;
-}
-
-/* Cursor */
-.monaco-editor .cursor {
-  background-color: #ffffff !important;
-  border-color: #ffffff !important;
-}
-
-/* Dark theme overrides */
-.dark .monaco-editor.vs-dark {
-  background-color: #1f2937 !important;
-}
-
-.dark .monaco-editor .margin {
-  background-color: #111827 !important;
-}
-
-.dark .monaco-editor .margin .monaco-editor-background {
-  background-color: #111827 !important;
-}
-
-.dark .monaco-editor .indent-guide {
-  border-left: 1px solid #374151 !important;
-}
-
-.dark .monaco-editor .indent-guide.active {
-  border-left: 1px solid #6b7280 !important;
-}
-
-.dark .monaco-editor .line-numbers {
-  color: #6b7280 !important;
-}
-
-.dark .monaco-editor .cursor {
-  background-color: #ffffff !important;
-  border-color: #ffffff !important;
-}
-
-/* Mobile-specific Monaco Editor adjustments */
+/* Monaco Editor mobile adjustments */
 @media (max-width: 640px) {
   .monaco-editor {
     font-size: 12px !important;
@@ -213,14 +134,26 @@ textarea::-webkit-scrollbar-thumb:hover {
   .monaco-editor .margin {
     width: 30px !important;
   }
+  
+  /* Dark mode Monaco adjustments */
+  .dark .monaco-editor {
+    background-color: var(--color-leetcode-gray-800) !important;
+  }
 }
 
-/* Toast notifications mobile responsiveness */
+/* Toast notifications mobile responsiveness with theme support */
 @media (max-width: 640px) {
   .react-hot-toast__toast {
     margin: 0.5rem !important;
     max-width: calc(100vw - 1rem) !important;
     font-size: 0.875rem !important;
+  }
+  
+  /* Dark mode toast fixes */
+  .dark .react-hot-toast__toast {
+    background-color: var(--color-leetcode-gray-700) !important;
+    color: var(--color-leetcode-gray-100) !important;
+    border-color: var(--color-leetcode-gray-600) !important;
   }
 }
 
@@ -232,6 +165,21 @@ textarea::-webkit-scrollbar-thumb:hover {
     -ms-user-select: none;
     user-select: none;
   }
+  
+  /* Mobile button touch improvements */
+  .mobile-menu button {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    min-height: 44px; /* Minimum touch target size */
+  }
+  
+  /* Mobile logout button specific fixes */
+  .mobile-logout-btn {
+    position: relative;
+    z-index: 60 !important;
+    pointer-events: auto !important;
+    -webkit-tap-highlight-color: rgba(239, 68, 68, 0.2);
+  }
 }
 
 /* Smooth transitions for mobile interactions */
@@ -239,4 +187,70 @@ textarea::-webkit-scrollbar-thumb:hover {
   .mobile-transition {
     transition: all 0.2s ease-in-out;
   }
+  
+  /* Mobile dark mode background gradients */
+  .dark .mobile-bg-gradient {
+    background: linear-gradient(to bottom right, 
+      var(--color-leetcode-gray-900), 
+      var(--color-leetcode-gray-800), 
+      var(--color-leetcode-gray-900)) !important;
+  }
+}
+
+/* Additional mobile dark mode fixes */
+@media (max-width: 640px) {
+  /* Ensure cards and components have proper backgrounds */
+  .dark .bg-white {
+    background-color: var(--color-leetcode-gray-800) !important;
+  }
+  
+  .dark .text-gray-900 {
+    color: var(--color-leetcode-gray-100) !important;
+  }
+  
+  .dark .text-gray-600 {
+    color: var(--color-leetcode-gray-300) !important;
+  }
+  
+  /* Mobile menu fixes */
+  .dark .mobile-menu {
+    background-color: var(--color-leetcode-gray-800) !important;
+    border-color: var(--color-leetcode-gray-700) !important;
+  }
+  
+  /* Mobile dropdown fixes */
+  .dark .dropdown-menu {
+    background-color: var(--color-leetcode-gray-800) !important;
+    border-color: var(--color-leetcode-gray-700) !important;
+  }
+  
+  .dark .dropdown-item:hover {
+    background-color: var(--color-leetcode-gray-700) !important;
+  }
+}
+
+/* Force theme transitions on all elements */
+.theme-transition * {
+  transition: background-color 0.2s ease-in-out, 
+              color 0.2s ease-in-out, 
+              border-color 0.2s ease-in-out,
+              box-shadow 0.2s ease-in-out !important;
+}
+
+/* Improve contrast in dark mode */
+.dark {
+  color-scheme: dark;
+}
+
+/* Ensure proper contrast for all text elements */
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+  color: var(--color-leetcode-gray-100) !important;
+}
+
+.dark p, .dark span, .dark div {
+  color: var(--color-leetcode-gray-200);
+}
+
+.dark .text-muted {
+  color: var(--color-leetcode-gray-400) !important;
 }

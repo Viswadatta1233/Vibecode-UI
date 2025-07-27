@@ -12,10 +12,31 @@ const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
-    logout();
-    navigate('/login');
-    setIsProfileOpen(false);
-    setIsMobileMenuOpen(false);
+    console.log('🔓 [NAVBAR] Logout clicked');
+    try {
+      logout();
+      console.log('✅ [NAVBAR] Logout successful, navigating to login');
+      navigate('/login');
+      setIsProfileOpen(false);
+      setIsMobileMenuOpen(false);
+    } catch (error) {
+      console.error('❌ [NAVBAR] Logout error:', error);
+    }
+  };
+
+  const handleMobileLogout = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('🔓 [NAVBAR] Mobile logout clicked');
+    try {
+      logout();
+      console.log('✅ [NAVBAR] Mobile logout successful, navigating to login');
+      navigate('/login');
+      setIsProfileOpen(false);
+      setIsMobileMenuOpen(false);
+    } catch (error) {
+      console.error('❌ [NAVBAR] Mobile logout error:', error);
+    }
   };
 
   const toggleProfile = () => {
@@ -28,13 +49,13 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-white dark:bg-leetcode-gray-800 shadow-sm border-b border-leetcode-gray-200 dark:border-leetcode-gray-700 transition-colors duration-200 w-full relative z-50">
+    <nav className="bg-white dark:bg-leetcode-gray-800 shadow-sm border-b border-leetcode-gray-200 dark:border-leetcode-gray-700 transition-colors duration-200 w-full relative z-50 theme-transition">
       <div className="flex justify-between items-center h-16 w-full px-4 md:px-8">
         {/* Logo */}
         <div className="flex items-center">
           <Link to="/" className="flex items-center space-x-2">
             <Code className="h-6 w-6 sm:h-8 sm:w-8 text-leetcode-green" />
-            <span className="text-lg sm:text-xl font-bold text-leetcode-gray-900 dark:text-white">VibeCode</span>
+            <span className="text-lg sm:text-xl font-bold text-leetcode-gray-900 dark:text-white transition-colors duration-200">VibeCode</span>
           </Link>
         </div>
 
@@ -44,127 +65,114 @@ const Navbar: React.FC = () => {
             <>
               <Link
                 to="/problems"
-                className="text-leetcode-gray-700 dark:text-leetcode-gray-300 hover:text-leetcode-green px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                className="text-leetcode-gray-700 dark:text-leetcode-gray-300 hover:text-leetcode-green px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
               >
                 Problems
               </Link>
+
+              {/* Theme Toggle */}
               <button
                 onClick={toggleTheme}
-                className="p-2 rounded-md text-leetcode-gray-700 dark:text-leetcode-gray-300 hover:text-leetcode-green transition-colors"
-                title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+                className="p-2 rounded-md text-leetcode-gray-500 dark:text-leetcode-gray-400 hover:text-leetcode-gray-700 dark:hover:text-leetcode-gray-200 hover:bg-leetcode-gray-100 dark:hover:bg-leetcode-gray-700 transition-all duration-200"
+                aria-label="Toggle theme"
               >
                 {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
               </button>
 
-              {/* User Profile Dropdown */}
+              {/* Profile Dropdown */}
               <div className="relative">
                 <button
                   onClick={toggleProfile}
-                  className="flex items-center space-x-2 p-2 rounded-md text-leetcode-gray-700 dark:text-leetcode-gray-300 hover:text-leetcode-green hover:bg-leetcode-gray-100 dark:hover:bg-leetcode-gray-700 transition-colors"
+                  className="flex items-center space-x-2 text-leetcode-gray-700 dark:text-leetcode-gray-300 hover:text-leetcode-green px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                  aria-label="User menu"
                 >
-                  <div className="w-8 h-8 bg-leetcode-green rounded-full flex items-center justify-center">
-                    <User className="h-4 w-4 text-white" />
-                  </div>
-                  <span className="text-sm font-medium hidden lg:block">
+                  <User className="h-5 w-5" />
+                  <span className="text-sm font-medium hidden lg:block transition-colors duration-200">
                     {user?.name || 'User'}
                   </span>
-                  <ChevronDown className={`h-4 w-4 transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown className="h-4 w-4" />
                 </button>
 
-                {/* Profile Dropdown Menu */}
+                {/* Dropdown Menu */}
                 {isProfileOpen && (
-                  <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-leetcode-gray-800 rounded-md shadow-lg border border-leetcode-gray-200 dark:border-leetcode-gray-700 py-1 z-50">
-                    {/* User Info */}
-                    <div className="px-4 py-3 border-b border-leetcode-gray-200 dark:border-leetcode-gray-700">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-10 h-10 bg-leetcode-green rounded-full flex items-center justify-center">
-                          <User className="h-5 w-5 text-white" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-leetcode-gray-900 dark:text-white">
-                            {user?.name || 'User'}
-                          </p>
-                          <p className="text-xs text-leetcode-gray-500 dark:text-leetcode-gray-400">
-                            {user?.email}
-                          </p>
-                          <p className="text-xs text-leetcode-gray-500 dark:text-leetcode-gray-400 capitalize">
-                            {user?.role || 'user'}
-                          </p>
-                        </div>
-                      </div>
+                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-leetcode-gray-800 rounded-md shadow-lg py-1 z-50 border border-leetcode-gray-200 dark:border-leetcode-gray-700 transition-colors duration-200">
+                    <div className="px-4 py-2 text-sm text-leetcode-gray-700 dark:text-leetcode-gray-300 border-b border-leetcode-gray-200 dark:border-leetcode-gray-700 transition-colors duration-200">
+                      <div className="font-medium">{user?.name}</div>
+                      <div className="text-leetcode-gray-500 dark:text-leetcode-gray-400 transition-colors duration-200">{user?.email}</div>
                     </div>
-
-                    {/* Menu Items */}
-                    <div className="py-1">
-                      <Link
-                        to="/problems"
-                        onClick={() => setIsProfileOpen(false)}
-                        className="flex items-center px-4 py-2 text-sm text-leetcode-gray-700 dark:text-leetcode-gray-300 hover:bg-leetcode-gray-100 dark:hover:bg-leetcode-gray-700 transition-colors"
-                      >
-                        <BookOpen className="h-4 w-4 mr-3" />
-                        My Problems
-                      </Link>
-                      
-                      <button
-                        onClick={() => setIsProfileOpen(false)}
-                        className="flex items-center w-full px-4 py-2 text-sm text-leetcode-gray-700 dark:text-leetcode-gray-300 hover:bg-leetcode-gray-100 dark:hover:bg-leetcode-gray-700 transition-colors"
-                      >
-                        <Settings className="h-4 w-4 mr-3" />
-                        Settings
-                      </button>
-                    </div>
-
-                    {/* Logout */}
-                    <div className="border-t border-leetcode-gray-200 dark:border-leetcode-gray-700 pt-1">
-                      <button
-                        onClick={handleLogout}
-                        className="flex items-center w-full px-4 py-2 text-sm text-leetcode-red hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-                      >
-                        <LogOut className="h-4 w-4 mr-3" />
-                        Sign Out
-                      </button>
-                    </div>
+                    <button
+                      onClick={() => {
+                        navigate('/problems');
+                        setIsProfileOpen(false);
+                      }}
+                      className="flex items-center w-full px-4 py-2 text-sm text-leetcode-gray-700 dark:text-leetcode-gray-300 hover:bg-leetcode-gray-100 dark:hover:bg-leetcode-gray-700 transition-colors duration-200"
+                    >
+                      <BookOpen className="h-4 w-4 mr-3" />
+                      Problems
+                    </button>
+                    <button
+                      onClick={() => {
+                        setIsProfileOpen(false);
+                      }}
+                      className="flex items-center w-full px-4 py-2 text-sm text-leetcode-gray-700 dark:text-leetcode-gray-300 hover:bg-leetcode-gray-100 dark:hover:bg-leetcode-gray-700 transition-colors duration-200"
+                    >
+                      <Settings className="h-4 w-4 mr-3" />
+                      Settings
+                    </button>
+                    <button
+                      onClick={handleLogout}
+                      className="flex items-center w-full px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-leetcode-gray-100 dark:hover:bg-leetcode-gray-700 transition-colors duration-200"
+                    >
+                      <LogOut className="h-4 w-4 mr-3" />
+                      Sign out
+                    </button>
                   </div>
                 )}
               </div>
             </>
           ) : (
-            <div className="flex items-center space-x-4">
+            <>
+              {/* Theme Toggle for Non-authenticated Users */}
               <button
                 onClick={toggleTheme}
-                className="p-2 rounded-md text-leetcode-gray-700 dark:text-leetcode-gray-300 hover:text-leetcode-green transition-colors"
-                title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+                className="p-2 rounded-md text-leetcode-gray-500 dark:text-leetcode-gray-400 hover:text-leetcode-gray-700 dark:hover:text-leetcode-gray-200 hover:bg-leetcode-gray-100 dark:hover:bg-leetcode-gray-700 transition-all duration-200"
+                aria-label="Toggle theme"
               >
                 {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
               </button>
+              
               <Link
                 to="/login"
-                className="text-leetcode-gray-700 dark:text-leetcode-gray-300 hover:text-leetcode-green px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                className="text-leetcode-gray-700 dark:text-leetcode-gray-300 hover:text-leetcode-green px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
               >
-                Login
+                Sign In
               </Link>
               <Link
                 to="/signup"
-                className="bg-leetcode-green hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                className="bg-leetcode-green hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
               >
                 Sign Up
               </Link>
-            </div>
+            </>
           )}
         </div>
 
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center space-x-2">
+          {/* Mobile Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-md text-leetcode-gray-700 dark:text-leetcode-gray-300 hover:text-leetcode-green transition-colors"
-            title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+            className="p-2 rounded-md text-leetcode-gray-500 dark:text-leetcode-gray-400 hover:text-leetcode-gray-700 dark:hover:text-leetcode-gray-200 hover:bg-leetcode-gray-100 dark:hover:bg-leetcode-gray-700 transition-all duration-200"
+            aria-label="Toggle theme"
           >
             {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
           </button>
+          
+          {/* Hamburger Menu */}
           <button
             onClick={toggleMobileMenu}
-            className="p-2 rounded-md text-leetcode-gray-700 dark:text-leetcode-gray-300 hover:text-leetcode-green transition-colors"
+            className="p-2 rounded-md text-leetcode-gray-500 dark:text-leetcode-gray-400 hover:text-leetcode-gray-700 dark:hover:text-leetcode-gray-200 hover:bg-leetcode-gray-100 dark:hover:bg-leetcode-gray-700 transition-all duration-200"
+            aria-label="Toggle mobile menu"
           >
             {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
@@ -173,58 +181,45 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white dark:bg-leetcode-gray-800 border-t border-leetcode-gray-200 dark:border-leetcode-gray-700">
-          <div className="px-4 py-2 space-y-1">
+        <div className="md:hidden bg-white dark:bg-leetcode-gray-800 border-t border-leetcode-gray-200 dark:border-leetcode-gray-700 transition-colors duration-200 mobile-menu relative z-50">
+          <div className="px-2 pt-2 pb-3 space-y-1">
             {token ? (
               <>
-                <Link
-                  to="/problems"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-3 py-2 text-leetcode-gray-700 dark:text-leetcode-gray-300 hover:text-leetcode-green hover:bg-leetcode-gray-100 dark:hover:bg-leetcode-gray-700 rounded-md text-sm font-medium transition-colors"
-                >
-                  Problems
-                </Link>
-                
-                {/* Mobile User Info */}
-                <div className="px-3 py-3 border-t border-leetcode-gray-200 dark:border-leetcode-gray-700">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-leetcode-green rounded-full flex items-center justify-center">
-                      <User className="h-5 w-5 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-leetcode-gray-900 dark:text-white">
-                        {user?.name || 'User'}
-                      </p>
-                      <p className="text-xs text-leetcode-gray-500 dark:text-leetcode-gray-400">
-                        {user?.email}
-                      </p>
-                    </div>
-                  </div>
+                {/* User Info */}
+                <div className="px-3 py-2 text-sm text-leetcode-gray-700 dark:text-leetcode-gray-300 border-b border-leetcode-gray-200 dark:border-leetcode-gray-700 mb-2 transition-colors duration-200">
+                  <div className="font-medium mobile-text-fix">{user?.name}</div>
+                  <div className="text-leetcode-gray-500 dark:text-leetcode-gray-400 mobile-text-fix">{user?.email}</div>
                 </div>
-
+                
+                {/* Mobile Navigation Links */}
                 <Link
                   to="/problems"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center px-3 py-2 text-sm text-leetcode-gray-700 dark:text-leetcode-gray-300 hover:bg-leetcode-gray-100 dark:hover:bg-leetcode-gray-700 transition-colors"
+                  className="flex items-center px-3 py-2 rounded-md text-base font-medium text-leetcode-gray-700 dark:text-leetcode-gray-300 hover:text-leetcode-green hover:bg-leetcode-gray-100 dark:hover:bg-leetcode-gray-700 transition-all duration-200 mobile-text-fix"
                 >
-                  <BookOpen className="h-4 w-4 mr-3" />
-                  My Problems
+                  <BookOpen className="h-5 w-5 mr-3" />
+                  Problems
                 </Link>
                 
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center w-full px-3 py-2 text-sm text-leetcode-gray-700 dark:text-leetcode-gray-300 hover:bg-leetcode-gray-100 dark:hover:bg-leetcode-gray-700 transition-colors"
+                  className="flex items-center w-full px-3 py-2 rounded-md text-base font-medium text-leetcode-gray-700 dark:text-leetcode-gray-300 hover:text-leetcode-green hover:bg-leetcode-gray-100 dark:hover:bg-leetcode-gray-700 transition-all duration-200 mobile-text-fix"
                 >
-                  <Settings className="h-4 w-4 mr-3" />
+                  <Settings className="h-5 w-5 mr-3" />
                   Settings
                 </button>
                 
                 <button
-                  onClick={handleLogout}
-                  className="flex items-center w-full px-3 py-2 text-sm text-leetcode-red hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                  onClick={handleMobileLogout}
+                  onTouchEnd={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleMobileLogout(e as any);
+                  }}
+                  className="flex items-center w-full px-3 py-2 rounded-md text-base font-medium text-red-600 dark:text-red-400 hover:bg-leetcode-gray-100 dark:hover:bg-leetcode-gray-700 transition-all duration-200 cursor-pointer touch-manipulation mobile-logout-btn"
                 >
-                  <LogOut className="h-4 w-4 mr-3" />
-                  Sign Out
+                  <LogOut className="h-5 w-5 mr-3" />
+                  Sign out
                 </button>
               </>
             ) : (
@@ -232,14 +227,14 @@ const Navbar: React.FC = () => {
                 <Link
                   to="/login"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-3 py-2 text-leetcode-gray-700 dark:text-leetcode-gray-300 hover:text-leetcode-green hover:bg-leetcode-gray-100 dark:hover:bg-leetcode-gray-700 rounded-md text-sm font-medium transition-colors"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-leetcode-gray-700 dark:text-leetcode-gray-300 hover:text-leetcode-green hover:bg-leetcode-gray-100 dark:hover:bg-leetcode-gray-700 transition-all duration-200 mobile-text-fix"
                 >
-                  Login
+                  Sign In
                 </Link>
                 <Link
                   to="/signup"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-3 py-2 bg-leetcode-green hover:bg-green-600 text-white rounded-md text-sm font-medium transition-colors"
+                  className="block px-3 py-2 rounded-md text-base font-medium bg-leetcode-green hover:bg-green-600 text-white transition-colors duration-200"
                 >
                   Sign Up
                 </Link>
@@ -250,12 +245,24 @@ const Navbar: React.FC = () => {
       )}
 
       {/* Click outside to close dropdowns */}
-      {(isProfileOpen || isMobileMenuOpen) && (
-        <div 
-          className="fixed inset-0 z-40" 
+      {isProfileOpen && (
+        <div
+          className="fixed inset-0 z-40"
           onClick={() => {
             setIsProfileOpen(false);
-            setIsMobileMenuOpen(false);
+          }}
+        />
+      )}
+      
+      {/* Mobile menu backdrop - separate from profile dropdown */}
+      {isMobileMenuOpen && (
+        <div
+          className="fixed inset-0 z-30 md:hidden"
+          onClick={(e) => {
+            // Only close if clicking the backdrop, not the menu itself
+            if (e.target === e.currentTarget) {
+              setIsMobileMenuOpen(false);
+            }
           }}
         />
       )}
